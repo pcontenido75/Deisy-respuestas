@@ -3,76 +3,117 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deisy - Respuestas</title>
+  <title>Deisy Respuestas</title>
   <style>
-    * { box-sizing: border-box; font-family: sans-serif; }
-    body { background: #faf5ff; margin: 0; padding: 16px; display: flex; justify-content: center; }
-    .card { background: #ffffff; border-radius: 14px; padding: 18px; max-width: 450px; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-    h2 { font-size: 1.2rem; color: #6b21a8; text-align: center; margin-top: 0; }
-    #output { background: #fdf4ff; border: 1.5px solid #d8b4fe; border-radius: 10px; padding: 14px; min-height: 90px; color: #3b0764; font-size: 1rem; line-height: 1.4; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 14px; }
-    .btns { display: flex; gap: 8px; }
-    button { flex: 1; padding: 12px; font-size: 0.95rem; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; }
-    .btn-gen { background: #7e22ce; color: #ffffff; }
-    .btn-cop { background: #0284c7; color: #ffffff; }
-    #status { text-align: center; font-size: 0.8rem; color: #7e22ce; margin-top: 8px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
+    body { background-color: #f3e8ff; padding: 20px; display: flex; justify-content: center; }
+    .box { background: #ffffff; border-radius: 14px; padding: 18px; max-width: 440px; width: 100%; box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
+    h1 { font-size: 1.15rem; color: #6b21a8; text-align: center; margin-bottom: 14px; }
+    .msg-area { background: #faf5ff; border: 2px solid #d8b4fe; border-radius: 10px; padding: 16px; min-height: 100px; color: #3b0764; font-size: 0.98rem; line-height: 1.45; text-align: center; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; }
+    .btn-row { display: flex; gap: 10px; }
+    button { flex: 1; padding: 14px 8px; font-size: 0.95rem; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; }
+    #btn-gen { background: #7e22ce; color: #ffffff; }
+    #btn-copy { background: #0284c7; color: #ffffff; }
+    #feedback { text-align: center; font-size: 0.82rem; color: #7e22ce; margin-top: 10px; min-height: 1.2em; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>Deisy • Mensajes de Luz</h2>
-  <div id="output">Toca "Generar respuesta"</div>
-  <div class="btns">
-    <button class="btn-gen" type="button" onclick="generar()">Generar respuesta</button>
-    <button class="btn-cop" type="button" onclick="copiar()">Copiar texto</button>
+  <div class="box">
+    <h1>Deisy • Mensajes de Bendición</h1>
+    <div class="msg-area" id="texto-salida">Toca el botón morado abajo</div>
+    
+    <div class="btn-row">
+      <button id="btn-gen" type="button">Generar respuesta</button>
+      <button id="btn-copy" type="button">Copiar texto</button>
+    </div>
+    
+    <div id="feedback">Listo para generar</div>
   </div>
-  <div id="status">Respuestas aleatorias anti-spam</div>
-</div>
 
-<script>
-  var inicios = ["Amén", "Así es", "Así sea", "Hecho está", "Decretado", "Amén y amén", "Recibido"];
-  var deseos = [
-    "así será para ti en perfecta armonía",
-    "que el universo multiplique cada bendición en tu vida",
-    "recibe toda la luz y la prosperidad que mereces",
-    "decretado queda con abundancia y paz",
-    "abro los caminos para que llegue todo lo bueno",
-    "que la gracia divina cubra tu hogar hoy y siempre",
-    "que cada una de tus peticiones se manifieste pronto"
-  ];
-  var cierres = [
-    "Bendiciones infinitas",
-    "Lluvia de bendiciones para ti y tu familia",
-    "Paz y luz para tu alma",
-    "Mucha luz en tu camino",
-    "Recibe un fuerte abrazo de bendición"
-  ];
-  var emojis = ["✨🙏", "🙏🕊️", "💫✨", "🌿🙏", "🕯️✨", "🤍🙏", "✨🕊️"];
+  <script>
+    (function() {
+      var arrA = ["Amén", "Así es", "Así sea", "Hecho está", "Decretado", "Amén y amén", "Recibido"];
+      var arrB = [
+        "así será para ti en perfecta armonía",
+        "que el universo multiplique cada bendición en tu vida",
+        "recibe toda la luz y la prosperidad que mereces",
+        "decretado queda con abundancia y paz",
+        "abro los caminos para que llegue todo lo bueno",
+        "que la gracia divina cubra tu hogar hoy y siempre",
+        "que cada una de tus peticiones se manifieste pronto"
+      ];
+      var arrC = [
+        "Bendiciones infinitas",
+        "Lluvia de bendiciones para ti y tu familia",
+        "Paz y luz para tu alma",
+        "Mucha luz en tu camino",
+        "Recibe un fuerte abrazo de bendición"
+      ];
+      var arrD = ["✨🙏", "🙏🕊️", "💫✨", "🌿🙏", "🕯️✨", "🤍🙏", "✨🕊️"];
 
-  function elegir(arr) {
-    return arr[Math.floor(Math.random() * arr.length)];
-  }
+      function tomar(lista) {
+        return lista[Math.floor(Math.random() * lista.length)];
+      }
 
-  function generar() {
-    var txt = elegir(inicios) + ", " + elegir(deseos) + ". " + elegir(cierres) + " " + elegir(emojis);
-    document.getElementById("output").innerText = txt;
-    document.getElementById("status").innerText = "¡Nueva respuesta generada!";
-  }
+      var pantalla = document.getElementById("texto-salida");
+      var aviso = document.getElementById("feedback");
+      var botonGenerar = document.getElementById("btn-gen");
+      var botonCopiar = document.getElementById("btn-copy");
 
-  function copiar() {
-    var caja = document.getElementById("output");
-    var texto = caja.innerText;
-    if (texto === 'Toca "Generar respuesta"') return;
+      function actualizar() {
+        var resultado = tomar(arrA) + ", " + tomar(arrB) + ". " + tomar(arrC) + " " + tomar(arrD);
+        pantalla.textContent = resultado;
+        aviso.textContent = "Nueva respuesta generada";
+      }
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(texto).then(function() {
-        document.getElementById("status").innerText = "✅ ¡Copiado con éxito!";
+      botonGenerar.addEventListener("click", actualizar);
+      botonGenerar.addEventListener("touchstart", function(e) {
+        e.preventDefault();
+        actualizar();
       });
-    } else {
-      var aux = document.createElement("textarea");
-      aux.value = texto;
-      document.body.appendChild(aux);
-      aux.select();
-      document.execCommand("copy");
-      document.body.removeChild(aux);
-      document.getElementById("status").innerText
+
+      function ejecutarCopia() {
+        var texto = pantalla.textContent;
+        if (texto.indexOf("Toca el botón") !== -1) return;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(texto).then(function() {
+            aviso.textContent = "✅ ¡Copiado con éxito!";
+          }).catch(function() {
+            copiaManual(texto);
+          });
+        } else {
+          copiaManual(texto);
+        }
+      }
+
+      function copiaManual(t) {
+        var input = document.createElement("textarea");
+        input.value = t;
+        input.style.position = "fixed";
+        input.style.opacity = "0";
+        document.body.appendChild(input);
+        input.focus();
+        input.select();
+        try {
+          document.execCommand("copy");
+          aviso.textContent = "✅ ¡Copiado con éxito!";
+        } catch (err) {
+          aviso.textContent = "Selecciona el texto para copiar";
+        }
+        document.body.removeChild(input);
+      }
+
+      botonCopiar.addEventListener("click", ejecutarCopia);
+      botonCopiar.addEventListener("touchstart", function(e) {
+        e.preventDefault();
+        ejecutarCopia();
+      });
+
+      // Genera una automáticamente al entrar
+      actualizar();
+    })();
+  </script>
+</body>
+</html>
