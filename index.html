@@ -3,99 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Deisy - Respuestas de Luz</title>
+  <title>Deisy - Respuestas</title>
   <style>
-    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: #faf5ff; margin: 0; padding: 16px; display: flex; justify-content: center; }
-    .card { background: #ffffff; border-radius: 16px; padding: 20px; max-width: 480px; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
-    h2 { font-size: 1.25rem; color: #6b21a8; margin-top: 0; text-align: center; }
-    .preview { background: #fcfaff; border: 1.5px solid #e9d5ff; border-radius: 12px; padding: 16px; min-height: 120px; font-size: 1rem; line-height: 1.5; color: #3b0764; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 16px; }
-    .btn-group { display: flex; gap: 10px; }
-    button { flex: 1; padding: 13px; font-size: 0.95rem; font-weight: 600; border-radius: 10px; border: none; cursor: pointer; transition: 0.2s; }
-    .btn-generate { background-color: #7e22ce; color: white; }
-    .btn-generate:active { background-color: #6b21a8; transform: scale(0.98); }
-    .btn-copy { background-color: #0284c7; color: white; }
-    .btn-copy:active { background-color: #0369a1; transform: scale(0.98); }
-    .alert { text-align: center; font-size: 0.82rem; color: #7e22ce; margin-top: 10px; }
+    * { box-sizing: border-box; font-family: sans-serif; }
+    body { background: #faf5ff; margin: 0; padding: 16px; display: flex; justify-content: center; }
+    .card { background: #ffffff; border-radius: 14px; padding: 18px; max-width: 450px; width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    h2 { font-size: 1.2rem; color: #6b21a8; text-align: center; margin-top: 0; }
+    #output { background: #fdf4ff; border: 1.5px solid #d8b4fe; border-radius: 10px; padding: 14px; min-height: 90px; color: #3b0764; font-size: 1rem; line-height: 1.4; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 14px; }
+    .btns { display: flex; gap: 8px; }
+    button { flex: 1; padding: 12px; font-size: 0.95rem; font-weight: bold; border-radius: 8px; border: none; cursor: pointer; }
+    .btn-gen { background: #7e22ce; color: #ffffff; }
+    .btn-cop { background: #0284c7; color: #ffffff; }
+    #status { text-align: center; font-size: 0.8rem; color: #7e22ce; margin-top: 8px; }
   </style>
 </head>
 <body>
 
 <div class="card">
-  <h2>Deisy • Mensajes de Bendición</h2>
-  <div class="preview" id="output">Presiona "Generar respuesta" para crear una bendición única.</div>
-  
-  <div class="btn-group">
-    <button class="btn-generate" onclick="crearRespuesta()">Generar respuesta</button>
-    <button class="btn-copy" onclick="copiarTexto()">Copiar texto</button>
+  <h2>Deisy • Mensajes de Luz</h2>
+  <div id="output">Toca "Generar respuesta"</div>
+  <div class="btns">
+    <button class="btn-gen" type="button" onclick="generar()">Generar respuesta</button>
+    <button class="btn-cop" type="button" onclick="copiar()">Copiar texto</button>
   </div>
-  <div class="alert" id="status">Mensajes variados anti-filtro para responder comentarios.</div>
+  <div id="status">Respuestas aleatorias anti-spam</div>
 </div>
 
 <script>
-  const aperturas = [
-    "Amén",
-    "Así es",
-    "Así sea",
-    "Hecho está",
-    "Decretado",
-    "Recibido y manifestado",
-    "Amén y amén",
-    "Totalmente manifestado"
-  ];
-
-  const decretos = [
+  var inicios = ["Amén", "Así es", "Así sea", "Hecho está", "Decretado", "Amén y amén", "Recibido"];
+  var deseos = [
     "así será para ti en perfecta armonía",
-    "que el universo multiplique cada deseo para tu vida",
-    "recibe toda la luz y la prosperidad que te corresponde",
-    "decretado queda en abundancia y paz",
-    "abro los caminos para que llegue todo lo bueno a tu hogar",
-    "que la energía divina cubra tu camino",
-    "que tus peticiones se manifiesten pronto",
-    "hecho está en el plano físico y espiritual"
+    "que el universo multiplique cada bendición en tu vida",
+    "recibe toda la luz y la prosperidad que mereces",
+    "decretado queda con abundancia y paz",
+    "abro los caminos para que llegue todo lo bueno",
+    "que la gracia divina cubra tu hogar hoy y siempre",
+    "que cada una de tus peticiones se manifieste pronto"
   ];
-
-  const bendiciones = [
+  var cierres = [
     "Bendiciones infinitas",
-    "Lluvia de bendiciones para ti y los tuyos",
+    "Lluvia de bendiciones para ti y tu familia",
     "Paz y luz para tu alma",
-    "Que la gracia divina te acompañe siempre",
     "Mucha luz en tu camino",
-    "Recibe un abrazo de luz y bendiciones",
-    "Infinitas gracias y bendiciones"
+    "Recibe un fuerte abrazo de bendición"
   ];
+  var emojis = ["✨🙏", "🙏🕊️", "💫✨", "🌿🙏", "🕯️✨", "🤍🙏", "✨🕊️"];
 
-  const emojis = ["✨🙏", "🙏🕊️", "💫✨", "🌿🙏", "🕯️✨", "🤍🙏", "✨🕊️", "🙌✨"];
-
-  function randomItem(arr) {
+  function elegir(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
   }
 
-  function crearRespuesta() {
-    const estilo = Math.floor(Math.random() * 3);
-    let texto = "";
-
-    if (estilo === 0) {
-      // Estilo fluido: Amén, así será para ti... Bendiciones infinitas ✨🙏
-      texto = `${randomItem(aperturas)}, ${randomItem(decretos)}. ${randomItem(bendiciones)} ${randomItem(emojis)}`;
-    } else if (estilo === 1) {
-      // Estilo directo: Bendiciones infinitas, amén. Decretado queda ✨
-      texto = `${randomItem(bendiciones)}, ${randomItem(aperturas).toLowerCase()}. ${randomItem(decretos).charAt(0).toUpperCase() + randomItem(decretos).slice(1)} ${randomItem(emojis)}`;
-    } else {
-      // Estilo sintético y potente: Hecho está. Amén y amén, luz para tu camino 🙏🕊️
-      texto = `${randomItem(aperturas)}. ${randomItem(bendiciones)} y ${randomItem(decretos)} ${randomItem(emojis)}`;
-    }
-
-    document.getElementById("output").innerText = texto;
-    document.getElementById("status").innerText = "¡Respuesta lista para enviar!";
+  function generar() {
+    var txt = elegir(inicios) + ", " + elegir(deseos) + ". " + elegir(cierres) + " " + elegir(emojis);
+    document.getElementById("output").innerText = txt;
+    document.getElementById("status").innerText = "¡Nueva respuesta generada!";
   }
 
-  function copiarTexto() {
-    const contenido = document.getElementById("output").innerText;
-    if (contenido.includes("Presiona")) return;
-    
-    navigator.clipboard.writeText(contenido).then(() => {
-      document.getElementById("status").innerText = "✅ Copiado al portapapeles.";
-      setTimeout(() => {
-        document.getElementById("status").innerText = "Listo para el siguiente comentario.";
-      }, 1800);
+  function copiar() {
+    var caja = document.getElementById("output");
+    var texto = caja.innerText;
+    if (texto === 'Toca "Generar respuesta"') return;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto).then(function() {
+        document.getElementById("status").innerText = "✅ ¡Copiado con éxito!";
+      });
+    } else {
+      var aux = document.createElement("textarea");
+      aux.value = texto;
+      document.body.appendChild(aux);
+      aux.select();
+      document.execCommand("copy");
+      document.body.removeChild(aux);
+      document.getElementById("status").innerText
