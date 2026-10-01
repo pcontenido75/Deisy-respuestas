@@ -1,113 +1,206 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#9b59b6">
-  <link rel="icon" type="image/png" href="https://dummyimage.com/192x192/9b59b6/ffffff.png&text=D">
-  <link rel="apple-touch-icon" href="https://dummyimage.com/192x192/9b59b6/ffffff.png&text=D">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Deisy • Mensajes de Bendición</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #f0f4ff 0%, #e2e8f0 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      padding: 28px 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+    .header-badge {
+      display: inline-block;
+      padding: 6px 14px;
+      background: #eef2ff;
+      color: #4f46e5;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    h1 {
+      color: #1e293b;
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      font-weight: 700;
+    }
+    .quote-box {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 24px 18px;
+      min-height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .quote-text {
+      color: #334155;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+    .btn-primary {
+      background: #4f46e5;
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #334155;
+    }
+    .alert-copied {
+      opacity: 0;
+      visibility: hidden;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #16a34a;
+      transition: opacity 0.3s ease;
+    }
+    .alert-copied.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .install-tip {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.8rem;
+      color: #64748b;
+      line-height: 1.4;
+    }
+  </style>
 </head>
 <body>
 
-  <div class="box">
-    <h1>Deisy • Mensajes de Bendición</h1>
-    <div class="msg-area" id="texto-salida">Toca el botón morado abajo</div>
-    
-    <div class="btn-row">
-      <button id="btn-gen" type="button">Generar respuesta</button>
-      <button id="btn-copy" type="button">Copiar texto</button>
+  <div class="card">
+    <div class="header-badge">Deisy</div>
+    <h1>Mensajes de Bendición</h1>
+
+    <div class="quote-box">
+      <p id="quote" class="quote-text">Cargando bendición...</p>
     </div>
-    
-    <div id="feedback">Listo para generar</div>
+
+    <div class="btn-group">
+      <button class="btn-primary" onclick="nuevaFrase()">
+        ✨ Nueva Bendición
+      </button>
+      <button class="btn-secondary" onclick="copiarTexto()">
+        📋 Copiar Mensaje
+      </button>
+    </div>
+
+    <div id="toast" class="alert-copied">✓ ¡Copiado con éxito!</div>
+
+    <div class="install-tip">
+      <strong>¿Quieres instalarla como app?</strong><br>
+      • En <b>iPhone (Safari)</b>: Toca compartir ⎋ y elige "Agregar al inicio".<br>
+      • En <b>Android (Chrome)</b>: Toca los tres puntos ⋮ y selecciona "Instalar aplicación" o "Agregar a la pantalla principal".
+    </div>
   </div>
 
   <script>
-    (function() {
-      var arrA = ["Amén", "Así es", "Así sea", "Hecho está", "Decretado", "Amén y amén", "Recibido"];
-      var arrB = [
-        "así será para ti en perfecta armonía",
-        "que el universo multiplique cada bendición en tu vida",
-        "recibe toda la luz y la prosperidad que mereces",
-        "decretado queda con abundancia y paz",
-        "abro los caminos para que llegue todo lo bueno",
-        "que la gracia divina cubra tu hogar hoy y siempre",
-        "que cada una de tus peticiones se manifieste pronto"
-      ];
-      var arrC = [
-        "Bendiciones infinitas",
-        "Lluvia de bendiciones para ti y tu familia",
-        "Paz y luz para tu alma",
-        "Mucha luz en tu camino",
-        "Recibe un fuerte abrazo de bendición"
-      ];
-      var arrD = ["✨🙏", "🙏🕊️", "💫✨", "🌿🙏", "🕯️✨", "🤍🙏", "✨🕊️"];
+    const frases = [
+      "Que cada paso en tu camino esté iluminado de salud, paz y prosperidad para ti y tu familia.",
+      "Bendiciones en tu hogar: que nunca falte el pan, el amor ni la armonía en cada rincón.",
+      "Decretado queda un camino lleno de puertas abiertas, proyectos exitosos y bienestar para tus seres queridos.",
+      "Que la abundancia llegue a tu vida de formas inesperadas y bendiga los planes de toda tu familia.",
+      "Hoy tu camino se despeja de dudas; la calma, el progreso y la alegría acompañan tu jornada.",
+      "Bendiciones sobre tus manos y tu trabajo, que todo esfuerzo se multiplique en bienestar familiar.",
+      "Que la serenidad guíe tus decisiones y la providencia nunca falte en tu mesa ni en tu vida.",
+      "Paz en tu hogar, firmeza en tus metas y una lluvia de bendiciones para quienes amas.",
+      "Que donde pongas tus pies encuentres respeto, oportunidad y la protección que tu familia merece.",
+      "Decretado: salud inquebrantable, éxito constante en tu camino y unión firme en tu hogar.",
+      "Que este día traiga gratitud por lo vivido y certezas de prosperidad en todo lo que viene.",
+      "Fuerza para los retos y abundancia en tus proyectos: tu esfuerzo rinde fruto cada día."
+    ];
 
-      function tomar(lista) {
-        return lista[Math.floor(Math.random() * lista.length)];
+    let indiceActual = -1;
+
+    function nuevaFrase() {
+      let nuevoIndice;
+      do {
+        nuevoIndice = Math.floor(Math.random() * frases.length);
+      } while (nuevoIndice === indiceActual && frases.length > 1);
+      
+      indiceActual = nuevoIndice;
+      document.getElementById("quote").innerText = frases[indiceActual];
+    }
+
+    async function copiarTexto() {
+      const texto = document.getElementById("quote").innerText;
+      try {
+        await navigator.clipboard.writeText(texto);
+        mostrarAlerta();
+      } catch (err) {
+        // Soporte alternativo para navegadores antiguos
+        const areaTemp = document.createElement("textarea");
+        areaTemp.value = texto;
+        document.body.appendChild(areaTemp);
+        areaTemp.select();
+        document.execCommand("copy");
+        document.body.removeChild(areaTemp);
+        mostrarAlerta();
       }
+    }
 
-      var pantalla = document.getElementById("texto-salida");
-      var aviso = document.getElementById("feedback");
-      var botonGenerar = document.getElementById("btn-gen");
-      var botonCopiar = document.getElementById("btn-copy");
+    function mostrarAlerta() {
+      const toast = document.getElementById("toast");
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
 
-      function actualizar() {
-        var resultado = tomar(arrA) + ", " + tomar(arrB) + ". " + tomar(arrC) + " " + tomar(arrD);
-        pantalla.textContent = resultado;
-        aviso.textContent = "Nueva respuesta generada";
-      }
-
-      botonGenerar.addEventListener("click", actualizar);
-      botonGenerar.addEventListener("touchstart", function(e) {
-        e.preventDefault();
-        actualizar();
-      });
-
-      function ejecutarCopia() {
-        var texto = pantalla.textContent;
-        if (texto.indexOf("Toca el botón") !== -1) return;
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(texto).then(function() {
-            aviso.textContent = "✅ ¡Copiado con éxito!";
-          }).catch(function() {
-            copiaManual(texto);
-          });
-        } else {
-          copiaManual(texto);
-        }
-      }
-
-      function copiaManual(t) {
-        var input = document.createElement("textarea");
-        input.value = t;
-        input.style.position = "fixed";
-        input.style.opacity = "0";
-        document.body.appendChild(input);
-        input.focus();
-        input.select();
-        try {
-          document.execCommand("copy");
-          aviso.textContent = "✅ ¡Copiado con éxito!";
-        } catch (err) {
-          aviso.textContent = "Selecciona el texto para copiar";
-        }
-        document.body.removeChild(input);
-      }
-
-      botonCopiar.addEventListener("click", ejecutarCopia);
-      botonCopiar.addEventListener("touchstart", function(e) {
-        e.preventDefault();
-        ejecutarCopia();
-      });
-
-      // Genera una automáticamente al entrar
-      actualizar();
-    })();
-  </script>
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js');
-  }
+    // Cargar frase inicial
+    nuevaFrase();
   </script>
 </body>
 </html>
