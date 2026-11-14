@@ -1,4 +1,4 @@
-const CACHE_NAME = 'deisy-app-v2';
+const CACHE_NAME = 'deisy-app-v3';
 const urlsToCache = [
   './',
   './index.html',
